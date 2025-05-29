@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"]
+    },
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "types": ["@nuxt/types", "@nuxtjs/vuetify"]
+  },
+  "exclude": ["node_modules", ".nuxt", "dist"]
+} 
