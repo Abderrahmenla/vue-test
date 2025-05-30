@@ -162,7 +162,7 @@ export default {
       return Math.max(0, this.dailyTarget - this.todayWords)
     },
     isValidTarget() {
-      return this.newTarget && this.newTarget > 0 && Number.isInteger(Number(this.newTarget))
+      return this.newTarget > 0 && Number.isInteger(Number(this.newTarget));
     },
     weekData() {
       return DAY_LABELS.map((day, index) => ({

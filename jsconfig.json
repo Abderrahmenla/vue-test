@@ -10,7 +10,7 @@
     "moduleResolution": "node",
     "jsx": "preserve",
     "jsxImportSource": "vue",
-    "types": ["@nuxt/types", "@nuxtjs/vuetify"]
+    "types": ["@nuxtjs/vuetify"]
   },
   "exclude": ["node_modules", ".nuxt", "dist"]
 } 
