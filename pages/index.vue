@@ -27,6 +27,8 @@
                   label="Active Day"
                   outlined
                   dense
+                  item-text="text"
+                  item-value="value"
                 />
               </v-col>
               <v-col cols="12" sm="6">

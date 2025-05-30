@@ -1,7 +1,5 @@
 <template>
-  <div class="bg-white flex items-center justify-center p-2 rounded-2xl shadow-sm border border-gray-100 w-full mx-auto">
-    <!-- Wrapper flex container with equal width children -->
-    
+  <div class="bg-white flex items-center justify-center px-4 pt-3 pb-8 rounded-2xl shadow-sm border border-gray-300 w-full mx-auto">
       <div
         v-for="(dayData, index) in weekData"
         :key="index"
@@ -10,51 +8,44 @@
             index === weekData.length-1 ? '' : 'w-full'
           ]"
       >
-        <!-- Day content container -->
-        <div class="gap-y-2 h-full">
-          <!-- Day Label -->
+        <div class="h-full">
           <div class="text-black font-medium text-sm text-center">
             {{ dayData.day }}
           </div>
           
-          <!-- Progress Circle -->
           <div
             :class="[
-              'w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 my-2',
-              getCircleClasses(getDayStatus(dayData, index))
+              'w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 mt-2 mb-8 relative',
+              getCircleClasses(dayData, index)
             ]"
           >
-            <!-- Check Icon -->
-            <svg
-              v-if="getDayStatus(dayData, index) === 'active-completed' || getDayStatus(dayData, index) === 'completed'"
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <polyline points="20,6 9,17 4,12"></polyline>
-            </svg>
+
+            
+            <v-icon v-if="dayData.completed >= dayData.total || activeDay === index" size="24" :color=" dayData.completed >= dayData.total  ? '#fff' : '#10a7b0'">mdi-check</v-icon>
+
+            <div :class="['text-gray-400 text-xs text-center absolute bottom-[-20px] left-1/2 -translate-x-1/2',
+              activeDay < index ? 'hidden'  : ''
+            ]">
+             
+               {{ dayData.completed }}/{{ dayData.total }}
+           
+            </div>
           </div>
           
-          <!-- Progress Numbers -->
-            <div class="text-gray-400 text-xs text-center">
-             <span>{{ dayData.completed }}/ </span> <br/> <span>{{ dayData.total }}</span>
-            </div>
         </div>
         
         <!-- Connector Line (attached to each day except the last) -->
         <div
           v-if="index < weekData.length - 1"
           :class="[
-            'h-1 flex transition-all duration-200 flex-grow mb-2',
+            'h-1 flex transition-all duration-200 flex-grow ',
             getConnectorClasses(
-              getDayStatus(dayData, index),
-              getDayStatus(weekData[index + 1], index + 1)
+              index,
+              weekData[index + 1]
             )
           ]"
         />
       </div>
-   
   </div>
 </template>
 
@@ -86,43 +77,51 @@ export default {
         day,
         completed: this.history[index],
         total: this.dailyTarget,
-        status: this.history[index] >= this.dailyTarget ? 'completed' : 'pending'
       }))
     }
   },
   methods: {
-    getDayStatus(day, index) {
-      if (index === this.activeDay && day.completed >= day.total) return 'active-completed'
-      if (day.completed >= day.total) return 'completed'
-      return 'pending'
+    isDayCompleted(day) {
+       return day.completed >= day.total
+    },
+    isActiveDay(index) {
+      return index === this.activeDay
     },
     
-    getCircleClasses(status) {
-      switch (status) {
-        case 'active-completed':
-          return 'bg-[#10a7b0] text-white border-[#10a7b0]'
-        case 'completed':
-          return 'bg-white text-[#10a7b0] border-[#10a7b0] border-2'
-        case 'pending':
-          return 'bg-gray-300 text-gray-500 border-gray-300'
-        default:
-          return 'bg-gray-300 text-gray-500 border-gray-300'
-      }
-    },
-    
-    getConnectorClasses(currentStatus, nextStatus) {
-      const isCurrentCompleted = currentStatus === 'completed' || currentStatus === 'active-completed'
-      const isNextCompleted = nextStatus === 'completed' || nextStatus === 'active-completed'
+    getCircleClasses(day, index) {
+      const isCompleted = this.isDayCompleted(day);
+      const isActive = this.isActiveDay(index);
+      
+      const classes = [
+        'w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 my-2',
+      ];
 
-      if (isCurrentCompleted && isNextCompleted) {
-        return 'bg-teal-500'
+      if (isActive) {
+        // Active day styling: white background, teal border, and teal text
+        classes.push('bg-white border-2 border-[#10a7b0]');
+        // Text color is teal for active day
+        classes.push('text-[#10a7b0]');
+
+      } else {
+        // Non-active day styling: filled teal if completed, grey if incomplete
+        if (isCompleted) {
+          classes.push('bg-[#10a7b0] text-white');
+        } else {
+          classes.push('bg-gray-300 text-gray-500');
+        }
+      }
+
+      return classes;
+    },
+    
+    getConnectorClasses(currentDay ,nextDay) {
+      const isNextCompleted = this.isDayCompleted(nextDay);
+
+      if (isNextCompleted || this.activeDay === currentDay + 1) {
+        return 'bg-[#0d848b]'; 
       }
       
-      // If the current day is completed (active or not) and the next is pending, the line should still be active color up to the next point.
-      if (isCurrentCompleted && nextStatus === 'pending') {
-           return 'bg-teal-500'
-      }
-      return 'bg-transparent'
+      return 'bg-transparent'; // Grey connector otherwise
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <v-card class="progress-card elevation-2 p-8 rounded-xl">
-    <v-row class="flex items-center justify-between w-full " no-gutters>
-      <v-card-title class="headline font-weight-bold mb-0 !p-0">Today's Progress</v-card-title>
+    <v-row class="flex items-center justify-between w-full !mb-10" no-gutters>
+      <v-card-title class="heading font-bold  !p-0"> <span class="text-5xl" >Today's Progress </span> </v-card-title>
       <v-menu
         v-model="menu"
         :close-on-content-click="false"
@@ -14,7 +14,7 @@
             v-bind="attrs"
             v-on="on"
           >
-            <v-icon color="#484a54">mdi-dots-vertical</v-icon>
+            <v-icon size="48" color="#484a54">mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -27,10 +27,9 @@
       </v-menu>
     </v-row>
     <div class="progress-center-wrap flex justify-center items-center mb-8">
-      <v-tooltip bottom v-if="progressPercentage < 100">
+      <v-tooltip :attach="true" top v-if="progressPercentage < 100">
         <template v-slot:activator="{ on, attrs }">
-          <div v-on="on" v-bind="attrs">
-            <div class="rounded-full border-[18px] border-[#fafafa]" >
+            <div v-on="on" v-bind="attrs" class="rounded-full border-[18px] border-[#fafafa]" >
               <v-progress-circular
                 :size="320"
                 :width="32"
@@ -48,9 +47,8 @@
                 </div>
               </v-progress-circular>
             </div>
-          </div>
         </template>
-        <span>Keep going — {{ wordsToTarget }} words to target!</span>
+        <span class="text-white text-xl">Keep going — {{ wordsToTarget }} words to target!</span>
       </v-tooltip>
       <div v-else class="rounded-full border-[18px] border-[#fafafa]" >
         <v-progress-circular
@@ -99,7 +97,7 @@
          <div class="flex justify-between items-center w-full">
            <v-btn text @click="cancelTarget">Cancel</v-btn>
            <v-btn 
-             color="primary" 
+             color="primary"
              :disabled="!isValidTarget" 
              @click="saveTarget"
            >
