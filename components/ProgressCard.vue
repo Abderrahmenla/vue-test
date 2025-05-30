@@ -210,6 +210,7 @@ export default {
     },
     saveTarget() {
       if (this.isValidTarget) {
+        console.log('Saving new daily target:', this.newTarget);
         this.onUpdateTarget(this.newTarget)
         this.targetDialog = false
         this.newTarget = this.dailyTarget
