@@ -5,7 +5,6 @@
       <v-menu
         v-model="menu"
         :close-on-content-click="false"
-        :z-index="1000" 
         :attach="true"
         offset-y
       >
@@ -15,7 +14,7 @@
             v-bind="attrs"
             v-on="on"
           >
-            <v-icon>mdi-dots-vertical</v-icon>
+            <v-icon color="#484a54">mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -31,84 +30,61 @@
       <v-tooltip bottom v-if="progressPercentage < 100">
         <template v-slot:activator="{ on, attrs }">
           <div v-on="on" v-bind="attrs">
-            <v-progress-circular
-              :size="220"
-              :width="18"
-              :value="progressPercentage"
-              color="#008080"
-              background="#F1F3F4"
-              class="progress-ring"
-            >
-              <div class="progress-center-content d-flex flex-column align-center">
-                <span class="progress-main-number">
-                  <span class="main-bold">{{ todayWords }}</span>
-                  <span class="main-light">/{{ dailyTarget }}</span>
-                </span>
-                <div class="progress-label">Per Day</div>
-              </div>
-            </v-progress-circular>
+            <div class="rounded-full border-[18px] border-[#fafafa]" >
+              <v-progress-circular
+                :size="320"
+                :width="32"
+                :value="progressPercentage"
+                color="#0d848b"
+                background="#eeeeee"
+                class="progress-ring"
+              >
+                <div class="progress-center-content d-flex flex-column align-center">
+                  <span class="progress-main-number">
+                    <span class="main-bold">{{ todayWords }}</span>
+                    <span class="main-light">/{{ dailyTarget }}</span>
+                  </span>
+                  <div class="progress-label">Per Day</div>
+                </div>
+              </v-progress-circular>
+            </div>
           </div>
         </template>
         <span>Keep going — {{ wordsToTarget }} words to target!</span>
       </v-tooltip>
-      <v-progress-circular
-        v-else
-        :size="220"
-        :width="18"
-        :value="progressPercentage"
-        color="#008080"
-        background="#F1F3F4"
-        class="progress-ring"
-      >
-        <div class="progress-center-content d-flex flex-column align-center">
-          <span class="progress-main-number">
-            <span class="main-bold">{{ todayWords }}</span>
-            <span class="main-light">/{{ dailyTarget }}</span>
-          </span>
-          <div class="progress-label">Per Day</div>
-        </div>
-      </v-progress-circular>
-    </div>
-    <v-card class="p-4 day-pills-container" outlined>
-      <v-row align="center" justify="start" class="day-pills-row" no-gutters>
-        <v-col
-          v-for="(day, i) in pills"
-          :key="day.label"
-          class="day-pill-col d-flex flex-column align-center"
-          cols="auto"
+      <div v-else class="rounded-full border-[18px] border-[#fafafa]" >
+        <v-progress-circular
+          :size="320"
+          :width="32"
+          :value="progressPercentage"
+          color="#0d848b"
+          background="#eeeeee"
+          class="progress-ring"
         >
-          <div class="day-label font-weight-bold text-center mb-1">{{ day.label }}</div>
-          <div class="d-flex align-center">
-            <v-avatar
-              :color="day.completed ? '#008080' : '#E5E7EB'"
-              :class="[
-                'day-pill',
-                { 'active-outline': i === activeDay && !day.completed }
-              ]"
-              size="40"
-            >
-              <v-icon v-if="day.completed" color="white">mdi-check</v-icon>
-              <v-icon v-else-if="i === activeDay" color="#008080">mdi-check</v-icon>
-            </v-avatar>
-            <div
-              v-if="i < pills.length - 1"
-              class="pill-connector"
-              :style="{
-                background: pills[i].completed && pills[i+1].completed ? '#008080' : '#E5E7EB'
-              }"
-            ></div>
+          <div class="progress-center-content d-flex flex-column align-center">
+            <span class="progress-main-number">
+              <span class="main-bold">{{ todayWords }}</span>
+              <span class="main-light">/{{ dailyTarget }}</span>
+            </span>
+            <div class="progress-label">Per Day</div>
           </div>
-          <div class="day-progress mt-1">{{ history[i] }}/{{ dailyTarget }}</div>
-        </v-col>
-      </v-row>
-    </v-card>
-    <v-dialog v-model="targetDialog" max-width="400" persistent>
+        </v-progress-circular>
+      </div>
+
+    </div>
+    <WeeklyProgressTracker
+      :history="history"
+      :daily-target="dailyTarget"
+      :active-day="activeDay"
+    />
+    <v-dialog v-model="targetDialog" max-width="400" persistent attach overlay-opacity="0.5"
+    overlay-color="black">
       <v-card class="target-dialog">
         <v-card-title class="headline">Set Daily Target</v-card-title>
         <v-card-text>
           <v-text-field
             v-model.number="newTarget"
-            label="Daily Target (words)"
+            label="Daily Target"
             type="number"
             min="1"
             :rules="targetRules"
@@ -116,12 +92,20 @@
             @keyup.enter="saveTarget"
             outlined
             dense
+            hide-details="auto"
           />
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text @click="cancelTarget">Cancel</v-btn>
-          <v-btn color="primary" :disabled="!isValidTarget" @click="saveTarget">Save</v-btn>
+         <div class="flex justify-between items-center w-full">
+           <v-btn text @click="cancelTarget">Cancel</v-btn>
+           <v-btn 
+             color="primary" 
+             :disabled="!isValidTarget" 
+             @click="saveTarget"
+           >
+             Save
+           </v-btn>
+         </div>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -129,9 +113,13 @@
 </template>
 
 <script>
-const DAY_LABELS = ['M', 'T', 'W', 'Th', 'F', 'Sat', 'Su']
+import WeeklyProgressTracker from './WeeklyProgressTracker.vue'
+
 export default {
   name: 'ProgressCard',
+  components: {
+    WeeklyProgressTracker
+  },
   props: {
     history: {
       type: Array,
@@ -157,7 +145,7 @@ export default {
     return {
       targetDialog: false,
       menu: false,
-      newTarget: null,
+      newTarget: this.dailyTarget,
       targetRules: [
         v => !!v || 'Target is required',
         v => (v && v > 0) || 'Target must be greater than 0',
@@ -178,17 +166,38 @@ export default {
     isValidTarget() {
       return this.newTarget && this.newTarget > 0 && Number.isInteger(Number(this.newTarget))
     },
-    pills() {
-      return DAY_LABELS.map((label, i) => ({
-        label,
-        completed: this.history[i] >= this.dailyTarget
+    weekData() {
+      return DAY_LABELS.map((day, index) => ({
+        day,
+        completed: this.history[index],
+        total: this.dailyTarget,
+        status: this.history[index] >= this.dailyTarget ? 'completed' : 'pending'
       }))
     }
   },
   methods: {
-    debugMenu() {
-      console.log('Menu button clicked')
-      console.log('Vuetify version:', this.$vuetify.version)
+    getDayStatus(day, index) {
+      if (index === this.activeDay && day.completed >= day.total) return 'active-completed'
+      if (day.completed >= day.total) return 'completed'
+      return 'pending'
+    },
+    getCircleClasses(status) {
+      switch (status) {
+        case 'active-completed':
+          return 'bg-teal-500 text-white border-teal-500'
+        case 'completed':
+          return 'bg-white text-teal-500 border-teal-500 border-2'
+        case 'pending':
+          return 'bg-gray-300 text-gray-500 border-gray-300'
+        default:
+          return 'bg-gray-300 text-gray-500 border-gray-300'
+      }
+    },
+    getConnectorClasses(currentStatus, nextStatus) {
+      if (currentStatus === 'active-completed' && nextStatus === 'completed') {
+        return 'bg-teal-500'
+      }
+      return 'bg-gray-300'
     },
     calculateProgressPercentage(current, target) {
       if (target <= 0) return 0
@@ -196,8 +205,8 @@ export default {
       return Math.min(percentage, 100)
     },
     openTargetDialog() {
+      this.menu = false
       this.$nextTick(() => {
-        this.newTarget = this.dailyTarget
         this.targetDialog = true
       })
     },
@@ -205,11 +214,12 @@ export default {
       if (this.isValidTarget) {
         this.onUpdateTarget(this.newTarget)
         this.targetDialog = false
+        this.newTarget = this.dailyTarget
       }
     },
     cancelTarget() {
       this.targetDialog = false
-      this.newTarget = null
+      this.newTarget = this.dailyTarget
     }
   }
 }
@@ -217,8 +227,8 @@ export default {
 
 <style scoped>
 .progress-card {
-  min-width: 320px;
-  max-width: 600px;
+  min-width: 450px;
+  width: 35vw;
   margin: 0 auto;
   font-family: 'Roboto', sans-serif;
   border-radius: 24px;
@@ -250,101 +260,19 @@ export default {
   letter-spacing: -1px;
 }
 .main-bold {
-  color: #008080;
+  color: #11334d;
   font-weight: 700;
 }
 .main-light {
-  color: #888;
+  color: #484a54;
   font-weight: 400;
   font-size: 2rem;
 }
 .progress-label {
   font-size: 1.1rem;
-  color: #888;
+  color: #484a54;
   font-weight: 400;
   margin-top: 2px;
-}
-.day-pills-container {
-  background: #fff;
-  border-radius: 16px;
-  border: 1.5px solid #E5E7EB;
-  box-shadow: none;
-  margin: 0 auto;
-  max-width: 100%;
-  overflow-x: auto;
-}
-.day-pills-row {
-  flex-wrap: nowrap !important;
-  gap: 0;
-  min-width: 320px;
-}
-.day-pill-col {
-  flex: 1;
-  min-width: 44px;
-  padding: 0 2px;
-}
-.day-label {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #222;
-  margin-bottom: 2px;
-  text-align: center;
-}
-.day-pill {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-weight: 600;
-  transition: box-shadow 0.2s;
-  box-shadow: none;
-  border: none;
-}
-.active-outline {
-  box-shadow: 0 0 0 2px #008080;
-  border: 2px solid #008080;
-  background: #fff !important;
-}
-.pill-connector {
-  width: 32px;
-  height: 2.5px;
-  border-radius: 1px;
-  margin: 0 2px;
-  background: #E5E7EB;
-}
-.day-progress {
-  font-size: 0.95rem;
-  color: #B0B3B8;
-  text-align: center;
-  line-height: 1;
-  min-width: 60px;
-  margin-top: 2px;
-  font-weight: 500;
-}
-@media (max-width: 400px) {
-  .progress-card {
-    min-width: 320px;
-    margin: 0 4px;
-    padding: 16px 4px 12px 4px;
-  }
-  .progress-center-content {
-    width: 120px;
-  }
-  .day-pill {
-    width: 28px;
-    height: 28px;
-    font-size: 0.9rem;
-  }
-  .day-pill-col {
-    min-width: 28px;
-  }
-  .day-progress {
-    font-size: 0.7rem;
-    min-width: 40px;
-  }
 }
 .target-dialog {
   border-radius: 16px;
@@ -360,10 +288,20 @@ export default {
 .target-dialog .v-card__actions {
   padding: 8px 24px 20px;
 }
-.menu-item {
-  cursor: pointer;
+.translate-y-0\.5 {
+  transform: translateY(0.125rem);
 }
-.menu-item:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+.-translate-y-0\.5 {
+  transform: translateY(-0.125rem);
+}
+@media (max-width: 400px) {
+  .progress-card {
+    min-width: 320px;
+    margin: 0 4px;
+    padding: 16px 4px 12px 4px;
+  }
+  .progress-center-content {
+    width: 120px;
+  }
 }
 </style>

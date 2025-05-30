@@ -51,7 +51,8 @@ export default {
           success: '#4CAF50'
         }
       }
-    }
+    },
+    components: true,
   },
 
   // CSS

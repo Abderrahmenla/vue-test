@@ -13,7 +13,7 @@
         </div>
 
         <!-- Demo Controls -->
-        <v-card class="demo-controls mb-12" elevation="1">
+        <v-card class="demo-controls rounded-[24px] mb-12" elevation="1">
           <v-card-title class="subtitle-1">
             <v-icon left>mdi-tune</v-icon>
             Demo Controls
@@ -168,7 +168,7 @@ export default {
 .demo-container {
   min-height: 100vh;
   padding: 24px 12px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: #f0f3f3;
 }
 
 .demo-header {
