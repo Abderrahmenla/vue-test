@@ -1,7 +1,8 @@
 export default {
   compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
-
+  ssr: false,
+  
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - todays-progress-card',
@@ -38,7 +39,13 @@ export default {
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    // Enable tree-shaking to reduce bundle size
+    treeShake: true,
+    // Let Vuetify handle its own CSS imports
+    defaultAssets: {
+      font: false,
+      icons: 'mdi'
+    },
     theme: {
       themes: {
         light: {
@@ -57,13 +64,36 @@ export default {
 
   // CSS
   css: [
-    '@mdi/font/css/materialdesignicons.css'
+    '@mdi/font/css/materialdesignicons.css',
+    '~/assets/css/main.css'
   ],
 
-  // Build modules
   build: {
-    transpile: ['vuetify']
-  },
+    transpile: ['vuetify/lib'],
+    
+    babel: {
+      plugins: [
+        ['@babel/plugin-proposal-private-methods', { loose: true }]
+      ]
+    },
 
-  ssr: false,
+    // Updated PostCSS configuration to fix warnings
+    postcss: {
+      postcssOptions: {
+        plugins: {
+          'postcss-import': {
+            // This helps resolve the @charset issue
+          },
+          'autoprefixer': {}
+        }
+      }
+    },
+
+    // Additional webpack optimization to handle large bundles
+    extend(config, { isClient }) {
+      if (isClient) {
+        config.optimization.splitChunks.maxSize = 200000;
+      }
+    }
+  }
 }

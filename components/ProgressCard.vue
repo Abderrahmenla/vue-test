@@ -39,10 +39,9 @@
                 class="progress-ring"
               >
                 <div class="progress-center-content d-flex flex-column align-center">
-                  <span class="progress-main-number">
-                    <span class="main-bold">{{ todayWords }}</span>
-                    <span class="main-light">/{{ dailyTarget }}</span>
-                  </span>
+                  <div class="progress-main-number flex items-center">
+                    <span class="main-bold">{{ todayWords }}</span><span class="main-light">/{{ dailyTarget }}</span>
+                  </div>
                   <div class="progress-label">Per Day</div>
                 </div>
               </v-progress-circular>
@@ -60,10 +59,10 @@
           class="progress-ring"
         >
           <div class="progress-center-content d-flex flex-column align-center">
-            <span class="progress-main-number">
+            <p class="progress-main-number flex items-center">
               <span class="main-bold">{{ todayWords }}</span>
               <span class="main-light">/{{ dailyTarget }}</span>
-            </span>
+            </p>
             <div class="progress-label">Per Day</div>
           </div>
         </v-progress-circular>

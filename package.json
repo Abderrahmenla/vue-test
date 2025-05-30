@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "NODE_OPTIONS='--no-deprecation' nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "lint": "eslint .",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
+    "@babel/plugin-proposal-private-methods": "^7.18.6",
     "@babel/preset-env": "^7.27.2",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/tailwindcss": "^6.14.0",
