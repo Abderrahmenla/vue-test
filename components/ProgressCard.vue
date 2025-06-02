@@ -1,84 +1,87 @@
 <template>
-  <v-card class="progress-card elevation-2 p-8 rounded-xl">
+  <v-card
+    class="min-w-[320px] mx-1 !rounded-[24px] py-3 px-1 sm:min-w-[450px] w-[35vw] sm:mx-auto font-roboto bg-white shadow-[0_4px_24px_0_rgba(0,0,0,0.04)] elevation-2 sm:p-8"
+  >
     <v-row class="flex items-center justify-between w-full !mb-10" no-gutters>
-      <v-card-title class="heading font-bold  !p-0"> <span class="text-5xl" >Today's Progress </span> </v-card-title>
-      <v-menu
-        v-model="menu"
-        :close-on-content-click="false"
-        :attach="true"
-        offset-y
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            icon
-            v-bind="attrs"
-            v-on="on"
-          >
+      <v-card-title class="heading font-bold !p-0">
+        <span class="text-5xl">Today's Progress </span>
+      </v-card-title>
+      <v-menu v-model="menu" :close-on-content-click="false" :attach="true" offset-y>
+        <template #activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
             <v-icon size="48" color="#484a54">mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
         <v-list>
-          <v-list-item
-            @click="openTargetDialog"
-          >
+          <v-list-item @click="openTargetDialog">
             <v-list-item-title>Set Daily Target</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
     </v-row>
-    <div class="progress-center-wrap flex justify-center items-center mb-8">
-      <v-tooltip :attach="true" top v-if="progressPercentage < 100">
-        <template v-slot:activator="{ on, attrs }">
-            <div v-on="on" v-bind="attrs" class="rounded-full border-[18px] border-[#fafafa]" >
-              <v-progress-circular
-                :size="320"
-                :width="32"
-                :value="progressPercentage"
-                color="#0d848b"
-                background="#eeeeee"
-                class="progress-ring"
+    <div class="flex justify-center items-center mb-8">
+      <v-tooltip v-if="progressPercentage < 100" :attach="true" top>
+        <template #activator="{ on, attrs }">
+          <div v-bind="attrs" class="rounded-full border-[18px] border-[#fafafa]" v-on="on">
+            <v-progress-circular
+              :size="320"
+              :width="32"
+              :value="progressPercentage"
+              color="#0d848b"
+              background="#eeeeee"
+              class="relative"
+            >
+              <div
+                class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 sm:w-[120px] w-[160px] flex flex-col items-center"
               >
-                <div class="progress-center-content d-flex flex-column align-center">
-                  <div class="progress-main-number flex items-center">
-                    <span class="main-bold">{{ todayWords }}</span><span class="main-light">/{{ dailyTarget }}</span>
-                  </div>
-                  <div class="progress-label">Per Day</div>
+                <div
+                  class="text-[2.4rem] font-bold leading-[1.1] tracking-[-1px] flex items-center"
+                >
+                  <span class="text-[#11334d] font-bold">{{ todayWords }}</span
+                  ><span class="text-[#484a54] text-[2rem]">/{{ dailyTarget }}</span>
                 </div>
-              </v-progress-circular>
-            </div>
+                <div class="text-[1.1rem] text-[#484a54] mt-0.5">Per Day</div>
+              </div>
+            </v-progress-circular>
+          </div>
         </template>
         <span class="text-white text-xl">Keep going — {{ wordsToTarget }} words to target!</span>
       </v-tooltip>
-      <div v-else class="rounded-full border-[18px] border-[#fafafa]" >
+      <div v-else class="rounded-full border-[18px] border-[#fafafa]">
         <v-progress-circular
           :size="320"
           :width="32"
           :value="progressPercentage"
           color="#0d848b"
           background="#eeeeee"
-          class="progress-ring"
+          class="relative"
         >
-          <div class="progress-center-content d-flex flex-column align-center">
-            <p class="progress-main-number flex items-center">
-              <span class="main-bold">{{ todayWords }}</span>
-              <span class="main-light">/{{ dailyTarget }}</span>
+          <div
+            class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 sm:w-[120px] w-[160px] flex flex-col items-center"
+          >
+            <p class="text-[2.4rem] font-bold leading-[1.1] tracking-[-1px] flex items-center">
+              <span class="text-[#11334d] font-bold">{{ todayWords }}</span>
+              <span class="text-[#484a54] text-[1.5rem]">/{{ dailyTarget }}</span>
             </p>
-            <div class="progress-label">Per Day</div>
+            <div class="text-[1.1rem] text-[#484a54] mt-0.5">Per Day</div>
           </div>
         </v-progress-circular>
       </div>
-
     </div>
-    <WeeklyProgressTracker
-      :history="history"
-      :daily-target="dailyTarget"
-      :active-day="activeDay"
-    />
-    <v-dialog v-model="targetDialog" max-width="400" persistent attach overlay-opacity="0.5"
-    overlay-color="black">
-      <v-card class="target-dialog">
-        <v-card-title class="headline">Set Daily Target</v-card-title>
-        <v-card-text>
+    <WeeklyProgressTracker :history="history" :daily-target="dailyTarget" :active-day="activeDay" />
+    <v-dialog
+      v-model="targetDialog"
+      max-width="400"
+      persistent
+      attach
+      overlay-opacity="0.5"
+      overlay-color="#000"
+    >
+      <v-card class="rounded-2xl">
+        <v-card-title class="headline py-5 px-6 text-[1.5rem] font-semibold"
+          >Set Daily Target</v-card-title
+        >
+        <v-card-text class="p-5 px-6">
           <v-text-field
             v-model.number="newTarget"
             label="Daily Target"
@@ -86,23 +89,17 @@
             min="1"
             :rules="targetRules"
             autofocus
-            @keyup.enter="saveTarget"
             outlined
             dense
             hide-details="auto"
+            @keyup.enter="saveTarget"
           />
         </v-card-text>
-        <v-card-actions>
-         <div class="flex justify-between items-center w-full">
-           <v-btn text @click="cancelTarget">Cancel</v-btn>
-           <v-btn 
-             color="primary"
-             :disabled="!isValidTarget" 
-             @click="saveTarget"
-           >
-             Save
-           </v-btn>
-         </div>
+        <v-card-actions class="pt-2 px-6 pb-5">
+          <div class="flex justify-between items-center w-full">
+            <v-btn text @click="cancelTarget">Cancel</v-btn>
+            <v-btn color="primary" :disabled="!isValidTarget" @click="saveTarget"> Save </v-btn>
+          </div>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -121,17 +118,17 @@ export default {
     history: {
       type: Array,
       required: true,
-      validator: v => v.length === 7 && v.every(n => typeof n === 'number')
+      validator: (v) => v.length === 7 && v.every((n) => typeof n === 'number')
     },
     dailyTarget: {
       type: Number,
       required: true,
-      validator: v => v > 0
+      validator: (v) => v > 0
     },
     activeDay: {
       type: Number,
       required: true,
-      validator: v => v >= 0 && v <= 6
+      validator: (v) => v >= 0 && v <= 6
     },
     onUpdateTarget: {
       type: Function,
@@ -144,9 +141,9 @@ export default {
       menu: false,
       newTarget: this.dailyTarget,
       targetRules: [
-        v => !!v || 'Target is required',
-        v => (v && v > 0) || 'Target must be greater than 0',
-        v => (v && Number.isInteger(Number(v))) || 'Target must be a whole number'
+        (v) => !!v || 'Target is required',
+        (v) => (v && v > 0) || 'Target must be greater than 0',
+        (v) => (v && Number.isInteger(Number(v))) || 'Target must be a whole number'
       ]
     }
   },
@@ -161,7 +158,7 @@ export default {
       return Math.max(0, this.dailyTarget - this.todayWords)
     },
     isValidTarget() {
-      return this.newTarget > 0 && Number.isInteger(Number(this.newTarget));
+      return this.newTarget > 0 && Number.isInteger(Number(this.newTarget))
     },
     weekData() {
       return DAY_LABELS.map((day, index) => ({
@@ -209,7 +206,7 @@ export default {
     },
     saveTarget() {
       if (this.isValidTarget) {
-        console.log('Saving new daily target:', this.newTarget);
+        console.log('Saving new daily target:', this.newTarget)
         this.onUpdateTarget(this.newTarget)
         this.targetDialog = false
         this.newTarget = this.dailyTarget
@@ -222,84 +219,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.progress-card {
-  min-width: 450px;
-  width: 35vw;
-  margin: 0 auto;
-  font-family: 'Roboto', sans-serif;
-  border-radius: 24px;
-  background: #fff;
-  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.04);
-}
-.progress-center-wrap {
-  margin: 0 0 24px 0;
-}
-.progress-ring {
-  position: relative;
-}
-.progress-center-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  width: 160px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.progress-main-number {
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #008080;
-  line-height: 1.1;
-  letter-spacing: -1px;
-}
-.main-bold {
-  color: #11334d;
-  font-weight: 700;
-}
-.main-light {
-  color: #484a54;
-  font-weight: 400;
-  font-size: 2rem;
-}
-.progress-label {
-  font-size: 1.1rem;
-  color: #484a54;
-  font-weight: 400;
-  margin-top: 2px;
-}
-.target-dialog {
-  border-radius: 16px;
-}
-.target-dialog .v-card__title {
-  padding: 20px 24px 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-.target-dialog .v-card__text {
-  padding: 20px 24px;
-}
-.target-dialog .v-card__actions {
-  padding: 8px 24px 20px;
-}
-.translate-y-0\.5 {
-  transform: translateY(0.125rem);
-}
-.-translate-y-0\.5 {
-  transform: translateY(-0.125rem);
-}
-@media (max-width: 400px) {
-  .progress-card {
-    min-width: 320px;
-    margin: 0 4px;
-    padding: 16px 4px 12px 4px;
-  }
-  .progress-center-content {
-    width: 120px;
-  }
-}
-</style>

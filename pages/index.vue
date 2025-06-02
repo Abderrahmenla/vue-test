@@ -1,9 +1,9 @@
 <template>
-  <v-container fluid class="demo-container">
+  <v-container fluid class="min-h-screen bg-[#f0f3f3] px-3 py-6 sm:px-4 sm:py-6">
     <v-row justify="center">
       <v-col cols="12" md="8" lg="6">
         <!-- Main Progress Card -->
-        <div class="demo-card-wrapper mb-12">
+        <div class="flex justify-center px-4 mb-12 sm:px-2">
           <ProgressCard
             :history="mockData.history"
             :daily-target="mockData.dailyTarget"
@@ -13,8 +13,8 @@
         </div>
 
         <!-- Demo Controls -->
-        <v-card class="demo-controls rounded-[24px] mb-12" elevation="1">
-          <v-card-title class="subtitle-1">
+        <v-card class="rounded-[24px] mb-12 bg-white/95 backdrop-blur-md" elevation="1">
+          <v-card-title>
             <v-icon left>mdi-tune</v-icon>
             Demo Controls
           </v-card-title>
@@ -42,17 +42,17 @@
                 />
               </v-col>
             </v-row>
-            
+
             <v-row>
               <v-col cols="12">
                 <v-subheader class="pl-0">Weekly Progress (Words Written)</v-subheader>
                 <v-row>
-                  <v-col 
-                    v-for="(day, index) in weekDays" 
+                  <v-col
+                    v-for="(day, index) in weekDays"
                     :key="index"
-                    cols="12" 
-                    sm="6" 
-                    md="4" 
+                    cols="12"
+                    sm="6"
+                    md="4"
                     lg="3"
                   >
                     <v-text-field
@@ -71,21 +71,10 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-snackbar
-      v-model="snackbar.show"
-      :color="snackbar.color"
-      :timeout="3000"
-      top
-    >
+    <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="3000" top>
       {{ snackbar.text }}
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          text
-          v-bind="attrs"
-          @click="snackbar.show = false"
-        >
-          Close
-        </v-btn>
+      <template #action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="snackbar.show = false"> Close </v-btn>
       </template>
     </v-snackbar>
   </v-container>
@@ -124,6 +113,19 @@ export default {
       ]
     }
   },
+  head() {
+    return {
+      title: "Today's Progress Card Demo",
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            "Interactive demo of the Today's Progress card component built with Nuxt 2 and Vuetify 2"
+        }
+      ]
+    }
+  },
   computed: {
     todayProgress() {
       const current = this.mockData.history[this.mockData.activeDay]
@@ -135,14 +137,14 @@ export default {
       return this.mockData.history.reduce((sum, words) => sum + words, 0)
     },
     completedDays() {
-      return this.mockData.history.filter(words => words >= this.mockData.dailyTarget).length
+      return this.mockData.history.filter((words) => words >= this.mockData.dailyTarget).length
     }
   },
   methods: {
     handleUpdateTarget(newTarget) {
       console.log('Target updated to:', newTarget)
       this.mockData.dailyTarget = newTarget
-      
+
       // Show success message in snackbar
       this.snackbar = {
         show: true,
@@ -150,63 +152,10 @@ export default {
         color: 'success'
       }
     }
-  },
-  head() {
-    return {
-      title: 'Today\'s Progress Card Demo',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Interactive demo of the Today\'s Progress card component built with Nuxt 2 and Vuetify 2'
-        }
-      ]
-    }
   }
 }
 </script>
 
-<style scoped>
-.demo-container {
-  min-height: 100vh;
-  padding: 24px 12px;
-  background: #f0f3f3;
-}
-
-.demo-header {
-  margin-bottom: 2rem;
-}
-
-.demo-card-wrapper {
-  display: flex;
-  justify-content: center;
-  padding: 0 16px;
-}
-
-.demo-controls,
-.demo-stats,
-.demo-instructions {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-}
-
-.demo-list {
-  padding-left: 20px;
-}
-
-.demo-list li {
-  margin-bottom: 8px;
-  line-height: 1.5;
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .demo-container {
-    padding: 16px 8px;
-  }
-  
-  .demo-card-wrapper {
-    padding: 0 8px;
-  }
-}
+<style>
+/* Remove all scoped styles as they are now handled by Tailwind classes */
 </style>
