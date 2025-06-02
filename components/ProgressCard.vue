@@ -21,8 +21,8 @@
 
       >
         <template #activator="{ on, attrs }">
-          <v-btn large class="w-[48px] h-[48px]" icon v-bind="attrs" v-on="on">
-            <v-icon color="#484a54">mdi-dots-vertical</v-icon>
+          <v-btn x-large icon v-bind="attrs" v-on="on">
+            <v-icon size="48" color="#484a54">mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
         <v-list>
