@@ -11,7 +11,7 @@ describe('ProgressCard', () => {
 
   beforeEach(() => {
     vuetify = new Vuetify()
-    
+
     // Default props that the component requires
     defaultProps = {
       history: [50, 75, 100, 25, 80, 90, 120], // 7 days of word counts
@@ -28,7 +28,7 @@ describe('ProgressCard', () => {
       vuetify,
       propsData: defaultProps
     })
-    
+
     const calculateProgressPercentage = wrapper.vm.calculateProgressPercentage
 
     // Test case 1: Target is 0 or less
@@ -65,13 +65,13 @@ describe('ProgressCard', () => {
       activeDay: 6, // Today
       onUpdateTarget: jest.fn()
     }
-    
+
     const wrapper = shallowMount(ProgressCard, {
       localVue,
       vuetify,
       propsData: customProps
     })
-    
+
     expect(wrapper.props().history).toEqual(customProps.history)
     expect(wrapper.props().dailyTarget).toBe(100)
     expect(wrapper.props().activeDay).toBe(6)
@@ -84,7 +84,7 @@ describe('ProgressCard', () => {
       vuetify,
       propsData: defaultProps
     })
-    
+
     // Today's words should be history[activeDay] = history[6] = 120
     expect(wrapper.vm.todayWords).toBe(120)
   })
@@ -95,7 +95,7 @@ describe('ProgressCard', () => {
       vuetify,
       propsData: defaultProps
     })
-    
+
     // Progress should be 100% since todayWords (120) >= dailyTarget (100)
     expect(wrapper.vm.progressPercentage).toBe(100)
   })
@@ -106,13 +106,13 @@ describe('ProgressCard', () => {
       history: [50, 75, 100, 25, 80, 90, 75], // Today = 75 words
       activeDay: 6
     }
-    
+
     const wrapper = shallowMount(ProgressCard, {
       localVue,
       vuetify,
       propsData: propsUnderTarget
     })
-    
+
     // Words to target should be 100 - 75 = 25
     expect(wrapper.vm.wordsToTarget).toBe(25)
   })
@@ -123,14 +123,14 @@ describe('ProgressCard', () => {
       vuetify,
       propsData: defaultProps
     })
-    
+
     // Initially dialog should be closed
     expect(wrapper.vm.targetDialog).toBe(false)
-    
+
     // Open dialog
     wrapper.vm.openTargetDialog()
     await wrapper.vm.$nextTick()
-    
+
     expect(wrapper.vm.targetDialog).toBe(true)
   })
 
@@ -140,18 +140,18 @@ describe('ProgressCard', () => {
       vuetify,
       propsData: defaultProps
     })
-    
+
     // Valid target
     wrapper.setData({ newTarget: 150 })
     expect(wrapper.vm.isValidTarget).toBe(true)
-    
+
     // Invalid targets
     wrapper.setData({ newTarget: 0 })
     expect(wrapper.vm.isValidTarget).toBe(false)
-    
+
     wrapper.setData({ newTarget: -5 })
     expect(wrapper.vm.isValidTarget).toBe(false)
-    
+
     wrapper.setData({ newTarget: 1.5 })
     expect(wrapper.vm.isValidTarget).toBe(false)
   })

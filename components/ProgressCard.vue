@@ -1,15 +1,22 @@
 <template>
   <v-card
-    class="min-w-[320px] mx-1 !rounded-[24px] py-3 px-1 sm:min-w-[450px] w-[35vw] sm:mx-auto font-roboto bg-white shadow-[0_4px_24px_0_rgba(0,0,0,0.04)] elevation-2 sm:p-8"
+    class="min-w-[360px] mx-1 !rounded-[24px] py-3 px-5 sm:px-1 sm:min-w-[720px] w-full sm:w-[35vw] sm:mx-auto font-roboto bg-white shadow-[0_4px_24px_0_rgba(0,0,0,0.04)] elevation-2 sm:p-8"
   >
     <v-row class="flex items-center justify-between w-full !mb-10" no-gutters>
       <v-card-title class="heading font-bold !p-0">
-        <span class="text-5xl">Today's Progress </span>
+        <span class="text-3xl sm:text-5xl">Today's Progress </span>
       </v-card-title>
-      <v-menu v-model="menu" :close-on-content-click="false" :attach="true" offset-y>
+      <v-menu
+        v-model="menu"
+        :close-on-content-click="false"
+        :attach="true"
+        offset-y
+        offset-x
+        bottom
+      >
         <template #activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon size="48" color="#484a54">mdi-dots-vertical</v-icon>
+          <v-btn large class="w-[48px] h-[48px]" icon v-bind="attrs" v-on="on">
+            <v-icon color="#484a54">mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -24,23 +31,28 @@
         <template #activator="{ on, attrs }">
           <div v-bind="attrs" class="rounded-full border-[18px] border-[#fafafa]" v-on="on">
             <v-progress-circular
-              :size="320"
-              :width="32"
               :value="progressPercentage"
               color="#0d848b"
               background="#eeeeee"
-              class="relative"
+              class="relative !w-[240px] !h-[240px] /* mobile first */ sm:!w-[280px] sm:!h-[280px] /* small screens */ md:!w-[320px] md:!h-[320px] /* medium screens */ lg:!w-[360px] lg:!h-[360px] /* large screens */"
             >
               <div
                 class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 sm:w-[120px] w-[160px] flex flex-col items-center"
               >
-                <div
-                  class="text-[2.4rem] font-bold leading-[1.1] tracking-[-1px] flex items-center"
+                <p
+                  class="text-[1.8rem] sm:text-[2rem] md:text-[2.2rem] lg:text-[2.4rem] font-bold leading-[1.1] tracking-[-1px] flex items-center"
                 >
-                  <span class="text-[#11334d] font-bold">{{ todayWords }}</span
-                  ><span class="text-[#484a54] text-[2rem]">/{{ dailyTarget }}</span>
+                  <span class="text-[#11334d] font-bold">{{ todayWords }}</span>
+                  <span
+                    class="text-[#484a54] text-[1.5rem] sm:text-[1.7rem] md:text-[1.8rem] lg:text-[2rem]"
+                    >/{{ dailyTarget }}</span
+                  >
+                </p>
+                <div
+                  class="text-[0.9rem] sm:text-[1rem] md:text-[1.05rem] lg:text-[1.1rem] text-[#484a54] mt-0.5"
+                >
+                  Per Day
                 </div>
-                <div class="text-[1.1rem] text-[#484a54] mt-0.5">Per Day</div>
               </div>
             </v-progress-circular>
           </div>
@@ -49,21 +61,28 @@
       </v-tooltip>
       <div v-else class="rounded-full border-[18px] border-[#fafafa]">
         <v-progress-circular
-          :size="320"
-          :width="32"
           :value="progressPercentage"
           color="#0d848b"
           background="#eeeeee"
-          class="relative"
+          class="relative !w-[240px] !h-[240px] /* mobile first */ sm:!w-[280px] sm:!h-[280px] /* small screens */ md:!w-[320px] md:!h-[320px] /* medium screens */ lg:!w-[360px] lg:!h-[360px] /* large screens */"
         >
           <div
             class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 sm:w-[120px] w-[160px] flex flex-col items-center"
           >
-            <p class="text-[2.4rem] font-bold leading-[1.1] tracking-[-1px] flex items-center">
+            <p
+              class="text-[1.8rem] sm:text-[2rem] md:text-[2.2rem] lg:text-[2.4rem] font-bold leading-[1.1] tracking-[-1px] flex items-center"
+            >
               <span class="text-[#11334d] font-bold">{{ todayWords }}</span>
-              <span class="text-[#484a54] text-[1.5rem]">/{{ dailyTarget }}</span>
+              <span
+                class="text-[#484a54] text-[1.5rem] sm:text-[1.7rem] md:text-[1.8rem] lg:text-[2rem]"
+                >/{{ dailyTarget }}</span
+              >
             </p>
-            <div class="text-[1.1rem] text-[#484a54] mt-0.5">Per Day</div>
+            <div
+              class="text-[0.9rem] sm:text-[1rem] md:text-[1.05rem] lg:text-[1.1rem] text-[#484a54] mt-0.5"
+            >
+              Per Day
+            </div>
           </div>
         </v-progress-circular>
       </div>
@@ -77,11 +96,11 @@
       overlay-opacity="0.5"
       overlay-color="#000"
     >
-      <v-card class="rounded-2xl">
-        <v-card-title class="headline py-5 px-6 text-[1.5rem] font-semibold"
+      <v-card class="rounded-2xl py-5">
+        <v-card-title class="headline !pb-6 px-6 text-[1.5rem] font-semibold"
           >Set Daily Target</v-card-title
         >
-        <v-card-text class="p-5 px-6">
+        <v-card-text class="py-5 px-6">
           <v-text-field
             v-model.number="newTarget"
             label="Daily Target"
@@ -95,10 +114,12 @@
             @keyup.enter="saveTarget"
           />
         </v-card-text>
-        <v-card-actions class="pt-2 px-6 pb-5">
+        <v-card-actions class="pt-2 px-6 !pb-0">
           <div class="flex justify-between items-center w-full">
-            <v-btn text @click="cancelTarget">Cancel</v-btn>
-            <v-btn color="primary" :disabled="!isValidTarget" @click="saveTarget"> Save </v-btn>
+            <v-btn class="" @click="cancelTarget">Cancel</v-btn>
+            <v-btn class="!bg-teal-400 !text-white" :disabled="!isValidTarget" @click="saveTarget">
+              Save
+            </v-btn>
           </div>
         </v-card-actions>
       </v-card>

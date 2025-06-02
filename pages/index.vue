@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-col cols="12" md="8" lg="6">
         <!-- Main Progress Card -->
-        <div class="flex justify-center px-4 mb-12 sm:px-2">
+        <div class="flex justify-center sm:px-4 mb-12">
           <ProgressCard
             :history="mockData.history"
             :daily-target="mockData.dailyTarget"
@@ -13,7 +13,7 @@
         </div>
 
         <!-- Demo Controls -->
-        <v-card class="rounded-[24px] mb-12 bg-white/95 backdrop-blur-md" elevation="1">
+        <v-card class="!rounded-[24px] mb-12 bg-white/95 backdrop-blur-md" elevation="1">
           <v-card-title>
             <v-icon left>mdi-tune</v-icon>
             Demo Controls
