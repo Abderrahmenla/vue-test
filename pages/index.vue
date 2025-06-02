@@ -4,16 +4,23 @@
       <v-col cols="12" md="8" lg="6">
         <!-- Main Progress Card -->
         <div class="flex justify-center sm:px-4 mb-12">
-          <ProgressCard
-            :history="mockData.history"
-            :daily-target="mockData.dailyTarget"
-            :active-day="mockData.activeDay"
-            :on-update-target="handleUpdateTarget"
-          />
+          <div
+            class="transition-all duration-300 ease-in-out hover:scale-[1.02] opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards]"
+          >
+            <ProgressCard
+              :history="mockData.history"
+              :daily-target="mockData.dailyTarget"
+              :active-day="mockData.activeDay"
+              :on-update-target="handleUpdateTarget"
+            />
+          </div>
         </div>
 
         <!-- Demo Controls -->
-        <v-card class="!rounded-[24px] mb-12 bg-white/95 backdrop-blur-md" elevation="1">
+        <v-card
+          class="!rounded-[24px] mb-12 bg-white/95 backdrop-blur-md !transition-all !duration-300 ease-in-out hover:shadow-lg hover:scale-[1.02] opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards]"
+          elevation="1"
+        >
           <v-card-title>
             <v-icon left>mdi-tune</v-icon>
             Demo Controls
@@ -158,4 +165,14 @@ export default {
 
 <style>
 /* Remove all scoped styles as they are now handled by Tailwind classes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>

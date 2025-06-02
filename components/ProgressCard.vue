@@ -18,7 +18,6 @@
         :nudge-left="10"
         offset-overflow
         content-class="progress-menu"
-
       >
         <template #activator="{ on, attrs }">
           <v-btn x-large icon v-bind="attrs" v-on="on">
@@ -46,17 +45,14 @@
                 class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 sm:w-[120px] w-[160px] flex flex-col items-center"
               >
                 <p
-                  class="text-[1.8rem] sm:text-[2rem] md:text-[2.2rem] lg:text-[2.4rem] font-bold leading-[1.1] tracking-[-1px] flex items-center"
+                  class="text-[1.8rem] sm:text-[2rem] md:text-[2.2rem] leading-[1.1] tracking-[-1px] flex items-center"
                 >
-                  <span class="text-[#11334d] font-bold">{{ todayWords }}</span>
-                  <span
-                    class="text-[#484a54] text-[1.5rem] sm:text-[1.7rem] md:text-[1.8rem] lg:text-[2rem]"
+                  <span class="text-[#11334d] font-semibold">{{ todayWords }}</span>
+                  <span class="text-[#484a54] text-[1.5rem] sm:text-[1.7rem]"
                     >/{{ dailyTarget }}</span
                   >
                 </p>
-                <div
-                  class="text-[0.9rem] sm:text-[1rem] md:text-[1.05rem] lg:text-[1.1rem] text-[#484a54] mt-0.5"
-                >
+                <div class="text-[0.9rem] sm:text-[1rem] md:text-[1.5rem] text-[#484a54] mt-0.5">
                   Per Day
                 </div>
               </div>
@@ -75,17 +71,12 @@
           <div
             class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 sm:w-[120px] w-[160px] flex flex-col items-center"
           >
-            <p
-              class="text-[1.8rem] sm:text-[2rem] md:text-[2.2rem] lg:text-[2.4rem] font-bold leading-[1.1] tracking-[-1px] flex items-center"
-            >
-              <span class="text-[#11334d] font-bold">{{ todayWords }}</span>
-              <span
-                class="text-[#484a54] text-[1.5rem] sm:text-[1.7rem] md:text-[1.8rem] lg:text-[2rem]"
-                >/{{ dailyTarget }}</span
-              >
+            <p class="text-[1.8rem] sm:text-[2rem] leading-[1.1] tracking-[-1px] flex items-center">
+              <span class="text-[#11334d] font-semiboldd">{{ todayWords }}</span>
+              <span class="text-[#484a54] text-[1.5rem] sm:text-[1.7rem]">/{{ dailyTarget }}</span>
             </p>
             <div
-              class="text-[0.9rem] sm:text-[1rem] md:text-[1.05rem] lg:text-[1.1rem] text-[#484a54] mt-0.5"
+              class="text-[0.9rem] sm:text-[1rem] md:text-[1.05rem] lg:text-[1.5rem] text-[#484a54] mt-0.5"
             >
               Per Day
             </div>
