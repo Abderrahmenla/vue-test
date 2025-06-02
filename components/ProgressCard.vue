@@ -1,18 +1,24 @@
 <template>
   <v-card
-    class="min-w-[360px] mx-1 !rounded-[24px] py-3 px-5 sm:px-1 sm:min-w-[720px] w-full sm:w-[35vw] sm:mx-auto font-roboto bg-white shadow-[0_4px_24px_0_rgba(0,0,0,0.04)] elevation-2 sm:p-8"
+    class="min-w-[360px] mx-1 !rounded-[24px] py-3 px-5 sm:px-10 sm:min-w-[720px] w-full sm:w-[35vw] sm:mx-auto font-roboto bg-white shadow-[0_4px_24px_0_rgba(0,0,0,0.04)] elevation-2 sm:p-8"
   >
     <v-row class="flex items-center justify-between w-full !mb-10" no-gutters>
-      <v-card-title class="heading font-bold !p-0">
-        <span class="text-3xl sm:text-5xl">Today's Progress </span>
+      <v-card-title class="heading !p-0">
+        <span class="text-3xl sm:text-5xl !font-bold">Today's Progress </span>
       </v-card-title>
       <v-menu
         v-model="menu"
         :close-on-content-click="false"
         :attach="true"
         offset-y
-        offset-x
-        bottom
+        left
+        :max-width="300"
+        :min-width="200"
+        :nudge-bottom="10"
+        :nudge-left="10"
+        offset-overflow
+        content-class="progress-menu"
+
       >
         <template #activator="{ on, attrs }">
           <v-btn large class="w-[48px] h-[48px]" icon v-bind="attrs" v-on="on">
@@ -95,8 +101,9 @@
       attach
       overlay-opacity="0.5"
       overlay-color="#000"
+      content-class="!rounded-3xl"
     >
-      <v-card class="rounded-2xl py-5">
+      <v-card class="!rounded-3xl py-5">
         <v-card-title class="headline !pb-6 px-6 text-[1.5rem] font-semibold"
           >Set Daily Target</v-card-title
         >
@@ -124,6 +131,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-overlay :value="targetDialog"></v-overlay>
   </v-card>
 </template>
 
@@ -240,3 +248,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+.progress-menu {
+  position: absolute;
+  z-index: 100;
+  max-height: calc(100vh - 100px); /* Adjust based on your needs */
+  overflow-y: auto;
+}
+</style>

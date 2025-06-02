@@ -27,7 +27,7 @@
 
           <p
             :class="[
-              'text-gray-400 text-xs text-center absolute bottom-[-55px] sm:bottom-[-20px] left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-8 sm:maw-w-auto',
+              'text-gray-400 text-xs text-center absolute bottom-[-55px] sm:bottom-[-20px] left-1/2 -translate-x-1/2 max-w-8 sm:max-w-32',
               activeDay < index ? 'hidden' : ''
             ]"
           >
